@@ -97,29 +97,50 @@ export async function POST(req: NextRequest) {
     </div>
   `;
 
+  // Combined email to YOU — works without a verified domain.
+  // The lead's email is in reply-to so you can reply directly to them.
+  const combinedHtml = `
+    <div style="font-family:system-ui,sans-serif;max-width:560px;margin:0 auto;">
+      <div style="background:#1B2A4A;padding:24px 32px;border-radius:8px 8px 0 0;">
+        <h2 style="color:#C4953A;margin:0;font-size:20px;">New Quiz Lead: ${firstName}</h2>
+        <p style="color:#C8D4E8;margin:8px 0 0;font-size:14px;">Score ${totalScore}/75 — ${bandLabel}</p>
+      </div>
+      <div style="background:#f9f9f9;padding:24px 32px;border-radius:0 0 8px 8px;border:1px solid #e0e0e0;">
+        <p style="margin:0 0 8px;"><strong>Name:</strong> ${firstName}</p>
+        <p style="margin:0 0 8px;"><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
+        <p style="margin:0 0 20px;"><strong>Lowest dimension:</strong> ${lowestDimension}</p>
+        <h3 style="color:#1B2A4A;margin:0 0 12px;">Dimension Scores</h3>
+        <pre style="background:#fff;padding:12px;border-radius:6px;border:1px solid #e0e0e0;font-size:13px;">${dimBreakdownText}</pre>
+        <h3 style="color:#1B2A4A;margin:16px 0 8px;">Context</h3>
+        <ul style="margin:0;padding-left:20px;font-size:14px;line-height:1.8;">
+          <li><strong>Duration:</strong> ${contextAnswers.duration ?? "—"}</li>
+          <li><strong>Agreement:</strong> ${contextAnswers.agreement ?? "—"}</li>
+          <li><strong>Trigger:</strong> ${contextAnswers.trigger ?? "—"}</li>
+        </ul>
+        ${contactMessage ? `<h3 style="color:#1B2A4A;margin:16px 0 8px;">Their message</h3><blockquote style="border-left:3px solid #C4953A;margin:0;padding:12px 16px;background:#fff;border-radius:0 6px 6px 0;font-size:14px;color:#333;">${contactMessage}</blockquote>` : ""}
+        <hr style="margin:20px 0;border:none;border-top:1px solid #e0e0e0;"/>
+        <p style="font-size:13px;color:#666;margin:0;">Hit reply to respond directly to ${firstName} at ${email}</p>
+      </div>
+    </div>
+  `;
+
   try {
-    await Promise.all([
-      fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${RESEND_API_KEY}`, "Content-Type": "application/json" },
-        body: JSON.stringify({
-          from: "Partnership Health <onboarding@resend.dev>",
-          to: [email],
-          subject: "Your Partnership Health Assessment Results",
-          html: leadHtml,
-        }),
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${RESEND_API_KEY}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        from: "Partnership Health <onboarding@resend.dev>",
+        to: [YOUR_EMAIL],
+        reply_to: email,
+        subject: `New Quiz Lead: ${firstName} — Score ${totalScore}/75`,
+        html: combinedHtml,
       }),
-      fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${RESEND_API_KEY}`, "Content-Type": "application/json" },
-        body: JSON.stringify({
-          from: "Partnership Health <onboarding@resend.dev>",
-          to: [YOUR_EMAIL],
-          subject: `New Quiz Lead: ${firstName} — Score ${totalScore}/75`,
-          html: notifyHtml,
-        }),
-      }),
-    ]);
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      console.error("Resend error:", data);
+      return NextResponse.json({ ok: false, error: data }, { status: 500 });
+    }
     return NextResponse.json({ ok: true });
   } catch (err) {
     console.error("Email send error:", err);
