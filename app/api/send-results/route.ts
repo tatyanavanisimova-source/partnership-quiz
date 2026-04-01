@@ -16,7 +16,7 @@ function getScoreBandLabel(score: number): string {
 }
 
 export async function POST(req: NextRequest) {
-  const { firstName, email, totalScore, dimScores, contextAnswers, lowestDimension } =
+  const { firstName, email, totalScore, dimScores, contextAnswers, lowestDimension, contactMessage } =
     await req.json();
 
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
@@ -93,6 +93,7 @@ export async function POST(req: NextRequest) {
         <li><strong>What triggered taking the quiz:</strong> ${contextAnswers.trigger ?? "—"}</li>
       </ul>
       <p><strong>Suggested angle:</strong> Lead with ${lowestDimension} — that's their declared weak spot.</p>
+      ${contactMessage ? `<h3>Their message to you</h3><blockquote style="border-left:3px solid #C4953A;margin:0;padding:12px 16px;background:#f9f6f0;color:#333;">${contactMessage}</blockquote>` : ""}
     </div>
   `;
 

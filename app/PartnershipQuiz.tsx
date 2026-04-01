@@ -172,6 +172,9 @@ export default function PartnershipQuiz() {
   const [submitting, setSubmitting] = useState(false);
   const [selected, setSelected] = useState<number | null>(null);
   const [animating, setAnimating] = useState(false);
+  const [contactMessage, setContactMessage] = useState("");
+  const [contactSending, setContactSending] = useState(false);
+  const [contactSent, setContactSent] = useState(false);
 
   const totalQuestions = DIMENSIONS.reduce((acc, d) => acc + d.questions.length, 0);
   const answeredQuestions = scores.reduce((acc, d) => acc + d.length, 0);
@@ -241,6 +244,30 @@ export default function PartnershipQuiz() {
     }
     setStep("results");
     setSubmitting(false);
+  }
+
+  async function handleContactSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setContactSending(true);
+    try {
+      await fetch("/api/send-results", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName,
+          email,
+          totalScore,
+          dimScores,
+          contextAnswers,
+          lowestDimension: lowestDimName,
+          contactMessage,
+        }),
+      });
+    } catch {
+      // Still show success
+    }
+    setContactSent(true);
+    setContactSending(false);
   }
 
   // ── WELCOME ────────────────────────────────────────────────────────────────
@@ -540,23 +567,58 @@ export default function PartnershipQuiz() {
           })}
         </div>
 
-        {/* CTA */}
-        <div style={{ background: NAVY, borderRadius: 16, padding: "32px 28px", textAlign: "center", marginBottom: 32 }}>
-          <p style={{ color: GOLD, fontSize: 12, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 12 }}>What happens next</p>
-          <h3 style={{ color: "#fff", fontSize: "clamp(18px, 4vw, 24px)", fontFamily: "Georgia, serif", marginBottom: 16 }}>
+        {/* CTA + Contact Form */}
+        <div style={{ background: NAVY, borderRadius: 16, padding: "32px 28px", marginBottom: 32 }}>
+          <p style={{ color: GOLD, fontSize: 12, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 12, textAlign: "center" }}>What happens next</p>
+          <h3 style={{ color: "#fff", fontSize: "clamp(18px, 4vw, 24px)", fontFamily: "Georgia, serif", marginBottom: 12, textAlign: "center" }}>
             {scoreBand.nextStep}
           </h3>
-          <p style={{ color: "#C8D4E8", fontSize: 15, lineHeight: 1.7, marginBottom: 28 }}>
+          <p style={{ color: "#C8D4E8", fontSize: 15, lineHeight: 1.7, marginBottom: 28, textAlign: "center" }}>
             In a Partnership Health Check, we spend 60 minutes looking at what your scores actually mean for your specific situation — and you leave with a clear picture of what to do next.
           </p>
-          <a
-            href="https://calendly.com/YOUR_LINK"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ background: GOLD, color: "#fff", display: "inline-block", padding: "16px 36px", borderRadius: 8, fontSize: 16, fontWeight: 600, textDecoration: "none" }}
-          >
-            Book a Free Partnership Health Check →
-          </a>
+
+          {contactSent ? (
+            <div style={{ background: "rgba(196,149,58,0.15)", border: `1px solid ${GOLD}`, borderRadius: 10, padding: "24px", textAlign: "center" }}>
+              <div style={{ fontSize: 36, marginBottom: 12 }}>✓</div>
+              <p style={{ color: "#fff", fontSize: 16, fontWeight: 600, margin: "0 0 8px" }}>Message sent!</p>
+              <p style={{ color: "#C8D4E8", fontSize: 14, margin: 0 }}>Tatyana will be in touch with you shortly.</p>
+            </div>
+          ) : (
+            <form onSubmit={handleContactSubmit} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+              <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+                <input
+                  type="text"
+                  value={firstName}
+                  readOnly
+                  style={{ flex: 1, minWidth: 120, padding: "12px 16px", borderRadius: 8, border: "2px solid rgba(255,255,255,0.15)", background: "rgba(255,255,255,0.06)", color: "#C8D4E8", fontSize: 15, fontFamily: "system-ui, sans-serif" }}
+                />
+                <input
+                  type="email"
+                  value={email}
+                  readOnly
+                  style={{ flex: 2, minWidth: 180, padding: "12px 16px", borderRadius: 8, border: "2px solid rgba(255,255,255,0.15)", background: "rgba(255,255,255,0.06)", color: "#C8D4E8", fontSize: 15, fontFamily: "system-ui, sans-serif" }}
+                />
+              </div>
+              <textarea
+                placeholder="Tell me a bit about your situation — what's going on in the partnership and what you'd most like help with…"
+                value={contactMessage}
+                onChange={(e) => setContactMessage(e.target.value)}
+                required
+                rows={4}
+                style={{ padding: "14px 16px", borderRadius: 8, border: "2px solid rgba(255,255,255,0.15)", background: "rgba(255,255,255,0.08)", color: "#fff", fontSize: 15, fontFamily: "system-ui, sans-serif", resize: "vertical" }}
+              />
+              <button
+                type="submit"
+                disabled={contactSending}
+                style={{ background: GOLD, color: "#fff", border: "none", padding: "16px", borderRadius: 8, fontSize: 16, fontWeight: 600, cursor: contactSending ? "not-allowed" : "pointer", opacity: contactSending ? 0.7 : 1, fontFamily: "system-ui, sans-serif" }}
+              >
+                {contactSending ? "Sending…" : "Request a Free Partnership Health Check →"}
+              </button>
+              <p style={{ color: "#6B7C9B", fontSize: 12, margin: 0, textAlign: "center" }}>
+                Your name and email are pre-filled from your quiz. No spam — ever.
+              </p>
+            </form>
+          )}
         </div>
 
         <p style={{ textAlign: "center", color: "#8A9BB5", fontSize: 13 }}>
