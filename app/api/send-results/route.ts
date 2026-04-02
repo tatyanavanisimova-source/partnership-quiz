@@ -129,7 +129,7 @@ export async function POST(req: NextRequest) {
       method: "POST",
       headers: { Authorization: `Bearer ${RESEND_API_KEY}`, "Content-Type": "application/json" },
       body: JSON.stringify({
-        from: "Partnership Health <onboarding@resend.dev>",
+        from: "Partnership Health <hello@partnershiparchitect.uk>",
         to: [YOUR_EMAIL],
         reply_to: email,
         subject: `New Quiz Lead: ${firstName} — Score ${totalScore}/75`,
