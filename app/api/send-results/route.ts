@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
         <div style="background:#1B2A4A;border-radius:12px;padding:28px;text-align:center;margin-top:24px;">
           <h3 style="color:#fff;font-size:20px;margin:0 0 12px;">Book a Free Partnership Health Check</h3>
           <p style="color:#C8D4E8;font-size:14px;line-height:1.7;margin:0 0 20px;font-family:system-ui,sans-serif;">60 minutes to understand what your scores mean for your specific situation, and what to do next.</p>
-          <a href="https://calendly.com/YOUR_LINK" style="background:#C4953A;color:#fff;display:inline-block;padding:14px 32px;border-radius:8px;font-size:15px;font-weight:600;text-decoration:none;font-family:system-ui,sans-serif;">Book Now →</a>
+          <a href="https://calendly.com/yourtimeforchanges/initial-consultation" style="background:#C4953A;color:#fff;display:inline-block;padding:14px 32px;border-radius:8px;font-size:15px;font-weight:600;text-decoration:none;font-family:system-ui,sans-serif;">Book Now →</a>
         </div>
       </div>
     </div>

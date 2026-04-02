@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Quiz — Resources & How It All Works</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Georgia, serif; background: #F8F7F4; color: #1B2A4A; line-height: 1.7; }
+    header { background: #1B2A4A; color: #fff; padding: 40px 32px; }
+    header h1 { font-size: 28px; margin-bottom: 8px; }
+    header p { color: #C8D4E8; font-size: 15px; font-family: system-ui, sans-serif; }
+    .gold { color: #C4953A; }
+    main { max-width: 860px; margin: 0 auto; padding: 40px 24px; }
+    h2 { font-size: 22px; color: #1B2A4A; margin: 40px 0 16px; border-bottom: 2px solid #C4953A; padding-bottom: 8px; }
+    h3 { font-size: 17px; color: #1B2A4A; margin: 24px 0 8px; }
+    p, li { font-size: 15px; line-height: 1.8; color: #333; font-family: system-ui, sans-serif; }
+    ul { padding-left: 20px; margin: 8px 0; }
+    li { margin-bottom: 6px; }
+    .card { background: #fff; border-radius: 12px; padding: 24px 28px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-left: 4px solid #C4953A; }
+    .card .url { font-family: monospace; background: #EEF2F8; padding: 4px 10px; border-radius: 4px; font-size: 13px; color: #1B2A4A; display: inline-block; margin: 6px 0; }
+    .card .login { font-size: 13px; color: #6B7C9B; margin-top: 8px; font-family: system-ui, sans-serif; }
+    .card .login strong { color: #1B2A4A; }
+    .flow { display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0; align-items: center; }
+    .flow-step { background: #1B2A4A; color: #fff; padding: 12px 18px; border-radius: 8px; font-size: 14px; font-family: system-ui, sans-serif; text-align: center; min-width: 140px; }
+    .flow-step span { display: block; font-size: 11px; color: #C4953A; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+    .arrow { font-size: 22px; color: #C4953A; align-self: center; }
+    .file-card { background: #EEF2F8; border-radius: 8px; padding: 16px 20px; margin-bottom: 12px; font-family: system-ui, sans-serif; }
+    .file-card .filename { font-family: monospace; font-weight: 700; color: #1B2A4A; font-size: 15px; }
+    .file-card .desc { font-size: 14px; color: #4A5568; margin-top: 4px; }
+    .warning { background: #FFF8E6; border: 1px solid #C4953A; border-radius: 8px; padding: 16px 20px; margin: 20px 0; font-family: system-ui, sans-serif; font-size: 14px; }
+    .warning strong { color: #C4953A; }
+    table { width: 100%; border-collapse: collapse; font-family: system-ui, sans-serif; font-size: 14px; margin: 16px 0; }
+    th { background: #1B2A4A; color: #fff; padding: 10px 14px; text-align: left; }
+    td { padding: 10px 14px; border-bottom: 1px solid #E0E7F0; }
+    tr:nth-child(even) td { background: #F4F6FA; }
+    footer { background: #1B2A4A; color: #8A9BB5; text-align: center; padding: 24px; font-size: 13px; font-family: system-ui, sans-serif; margin-top: 60px; }
+    @media (max-width: 600px) { .flow { flex-direction: column; } .arrow { transform: rotate(90deg); } }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Partnership Health Quiz — <span class="gold">My Resources</span></h1>
+  <p>A plain-English guide to everything I use, how it connects, and what to do if something needs fixing.</p>
+  <p style="margin-top:8px; font-size:13px;">Last updated: April 2026</p>
+</header>
+
+<main>
+
+  <!-- HOW IT ALL WORKS -->
+  <h2>How It All Works — The Big Picture</h2>
+  <p>Think of it like a chain. Each piece does one job. When a visitor takes the quiz, here is what happens step by step:</p>
+
+  <div class="flow">
+    <div class="flow-step"><span>Visitor</span>Opens the quiz link</div>
+    <div class="arrow">→</div>
+    <div class="flow-step"><span>Vercel</span>Serves the website</div>
+    <div class="arrow">→</div>
+    <div class="flow-step"><span>Quiz</span>They answer 15 questions</div>
+    <div class="arrow">→</div>
+    <div class="flow-step"><span>Quiz</span>They enter name + email</div>
+    <div class="arrow">→</div>
+    <div class="flow-step"><span>Resend</span>Sends emails</div>
+    <div class="arrow">→</div>
+    <div class="flow-step"><span>Result</span>They get results. You get lead.</div>
+  </div>
+
+  <p>The quiz code lives on <strong>GitHub</strong>. When you push a change to GitHub, <strong>Vercel</strong> automatically picks it up and updates the live website within 1–2 minutes. The domain <strong>partnershiparchitect.uk</strong> (bought on Namecheap) points to Vercel so visitors see a clean URL instead of a long vercel.app address. <strong>Resend</strong> is the email delivery service — it sends the results email to the quiz taker and a lead notification to you.</p>
+
+
+  <!-- ALL ACCOUNTS -->
+  <h2>All Accounts &amp; Where to Log In</h2>
+
+  <div class="card">
+    <h3>1. GitHub — Where Your Quiz Code Lives</h3>
+    <div class="url">https://github.com/tatyanavanisimova-source/partnership-quiz</div>
+    <p>This is the storage room for all your quiz code. You never need to go here directly unless something breaks. Every change made in Cursor gets saved here first, then automatically goes live.</p>
+    <p style="margin-top:10px;"><strong>If you need to change quiz questions:</strong> open Cursor → edit the file → save → push to GitHub → Vercel updates automatically.</p>
+    <div class="login"><strong>Login:</strong> github.com → username: tatyanavanisimova-source</div>
+  </div>
+
+  <div class="card">
+    <h3>2. Vercel — Where Your Website Is Hosted</h3>
+    <div class="url">https://vercel.com/tamtammm/partnership-quiz</div>
+    <p>Vercel is the engine that runs your quiz 24/7 on the internet. It watches GitHub for any changes and automatically redeploys. You also store your secret API keys here (Resend key, your email address).</p>
+    <ul style="margin-top:10px;">
+      <li><strong>See if the site is live:</strong> Vercel dashboard → Deployments → green "Ready" = live</li>
+      <li><strong>Change your email for notifications:</strong> Settings → Environment Variables → YOUR_EMAIL</li>
+      <li><strong>Redeploy manually:</strong> Deployments → "…" next to latest → Redeploy</li>
+    </ul>
+    <div class="login"><strong>Login:</strong> vercel.com → account: tatyanavanisimova-8835</div>
+  </div>
+
+  <div class="card">
+    <h3>3. Namecheap — Where Your Domain Is Registered</h3>
+    <div class="url">https://namecheap.com</div>
+    <p>You own <strong>partnershiparchitect.uk</strong> here. Namecheap is like the land registry — it proves you own the domain name and controls where it points. You set up DNS records here so that the domain points to Vercel (website) and Resend (email).</p>
+    <ul style="margin-top:10px;">
+      <li><strong>To update DNS:</strong> Domain List → Manage → Advanced DNS</li>
+      <li><strong>Renewal:</strong> The domain renews annually — check your renewal date in Dashboard</li>
+    </ul>
+    <div class="login"><strong>Login:</strong> namecheap.com → your account</div>
+  </div>
+
+  <div class="card">
+    <h3>4. Resend — What Sends the Emails</h3>
+    <div class="url">https://resend.com</div>
+    <p>Resend is the postal service. When someone completes the quiz, your code tells Resend to send two emails: one to the quiz taker with their results, and one to you with their details. Resend delivers those emails reliably and keeps logs so you can check if they were delivered.</p>
+    <ul style="margin-top:10px;">
+      <li><strong>Check if an email was sent:</strong> Resend → Emails (left sidebar) — shows every email sent, status, and any errors</li>
+      <li><strong>Check domain is verified:</strong> Resend → Domains → should show green "Verified"</li>
+      <li><strong>Your API key:</strong> Resend → API Keys — this is stored in Vercel, you don't need to touch it</li>
+    </ul>
+    <div class="login"><strong>Login:</strong> resend.com → account: yourtimeforchanges@gmail.com</div>
+  </div>
+
+  <div class="card">
+    <h3>5. Cursor — Where You Edit the Quiz</h3>
+    <div class="url">Installed on your laptop (desktop app)</div>
+    <p>Cursor is the editor you use to make changes to the quiz. Think of it as Word, but for code. You open the project folder, find the file you want to change, edit it, and then push it to GitHub. Cursor also has an AI chat (the panel on the right) where you describe what you want to change in plain English.</p>
+    <ul style="margin-top:10px;">
+      <li><strong>To open your project:</strong> Open Cursor → File → Open Folder → select <code>C:\Users\tatya\partnership-quiz</code></li>
+      <li><strong>To change quiz questions:</strong> open <code>app/PartnershipQuiz.tsx</code> → find the text → edit → save → push</li>
+    </ul>
+  </div>
+
+
+  <!-- WHAT FILE TO EDIT -->
+  <h2>What File to Edit for Common Changes</h2>
+  <p>All files live in the folder: <code>C:\Users\tatya\partnership-quiz\app\</code></p>
+
+  <div class="file-card">
+    <div class="filename">app/PartnershipQuiz.tsx</div>
+    <div class="desc">⭐ The main quiz file. Edit this to change: quiz questions, answer options, dimension names, score bands, welcome text, results text, contact form text, brand colours. This is the one you'll touch most often.</div>
+  </div>
+  <div class="file-card">
+    <div class="filename">app/page.tsx</div>
+    <div class="desc">A tiny file — just loads the quiz. You rarely need to touch this.</div>
+  </div>
+  <div class="file-card">
+    <div class="filename">app/layout.tsx</div>
+    <div class="desc">Controls the page title and description that appear in Google search results and when you share the link on LinkedIn. Edit this to update the SEO text.</div>
+  </div>
+  <div class="file-card">
+    <div class="filename">app/api/send-results/route.ts</div>
+    <div class="desc">The email engine. Controls what the emails look like, who they're sent to, and what data they contain. Edit this if you want to change the email format or add/remove information in the notification you receive.</div>
+  </div>
+
+
+  <!-- HOW TO CHANGE QUESTIONS -->
+  <h2>How to Change a Quiz Question (Step by Step)</h2>
+  <ol style="padding-left:20px; font-family:system-ui,sans-serif; font-size:15px; line-height:2;">
+    <li>Open <strong>Cursor</strong> on your laptop</li>
+    <li>Click <strong>File → Open Folder</strong> → select <code>C:\Users\tatya\partnership-quiz</code></li>
+    <li>In the file tree on the left, click <strong>app</strong> → click <strong>PartnershipQuiz.tsx</strong></li>
+    <li>Press <strong>Ctrl+F</strong> to search — type part of the question text you want to find</li>
+    <li>Edit the text directly</li>
+    <li>Press <strong>Ctrl+S</strong> to save</li>
+    <li>Open the Terminal in Cursor: <strong>View → Terminal</strong></li>
+    <li>Type: <code>git add . </code> then press Enter</li>
+    <li>Type: <code>git commit -m "Updated question"</code> then press Enter</li>
+    <li>Type: <code>git push</code> then press Enter</li>
+    <li>Wait 1–2 minutes → your live site updates automatically</li>
+  </ol>
+
+  <div class="warning">
+    <strong>⚠ Important:</strong> Always use the AI chat in Cursor (press <strong>Ctrl+L</strong>) if you're unsure. Just describe what you want to change in plain English — e.g. "change the second question in dimension 3 to say X instead of Y". The AI will make the edit safely without breaking anything else.
+  </div>
+
+
+  <!-- DNS RECORDS -->
+  <h2>DNS Records (What's in Namecheap Advanced DNS)</h2>
+  <p>These are the "address book" entries that connect your domain to the right services. Do not delete any of these.</p>
+
+  <table>
+    <tr><th>Type</th><th>Host</th><th>Points to</th><th>Purpose</th></tr>
+    <tr><td>A Record</td><td>@</td><td>216.198.79.1</td><td>Points your domain to Vercel (the website)</td></tr>
+    <tr><td>CNAME</td><td>www</td><td>d16e7cd8e2f329a5.vercel-dns-017.com</td><td>Makes www.partnershiparchitect.uk work too</td></tr>
+    <tr><td>TXT</td><td>resend._domainkey</td><td>long key starting p=MIGf…</td><td>Proves to email servers you own this domain (anti-spam)</td></tr>
+    <tr><td>TXT</td><td>send</td><td>v=spf1 include:amazonses.com ~all</td><td>Authorises Resend to send email on your behalf</td></tr>
+    <tr><td>TXT</td><td>_dmarc</td><td>v=DMARC1; p=none;</td><td>Email security policy</td></tr>
+  </table>
+
+
+  <!-- ENVIRONMENT VARIABLES -->
+  <h2>Secret Settings (Environment Variables in Vercel)</h2>
+  <p>These are stored securely in Vercel. Never share them publicly.</p>
+
+  <table>
+    <tr><th>Name</th><th>What it is</th><th>Where to find it if lost</th></tr>
+    <tr><td>RESEND_API_KEY</td><td>The password that lets your quiz send emails via Resend</td><td>resend.com → API Keys → create new key</td></tr>
+    <tr><td>YOUR_EMAIL</td><td>The email address where you receive lead notifications</td><td>yourtimeforchanges@gmail.com</td></tr>
+  </table>
+
+  <p style="margin-top:12px;">To view or change: <strong>vercel.com/tamtammm/partnership-quiz/settings/environment-variables</strong></p>
+
+
+  <!-- TROUBLESHOOTING -->
+  <h2>If Something Goes Wrong</h2>
+
+  <div class="file-card">
+    <div class="filename">Quiz not loading / white screen</div>
+    <div class="desc">Go to Vercel → Deployments. Is the latest one green ("Ready")? If red, click it → Logs to see the error. Copy the error and paste it into Cursor chat (Ctrl+L).</div>
+  </div>
+  <div class="file-card">
+    <div class="filename">Emails not arriving</div>
+    <div class="desc">1. Check spam folder first. 2. Go to resend.com → Emails — does it show the email as sent or failed? 3. Go to resend.com → Domains — is partnershiparchitect.uk showing as "Verified" (green)? If not, DNS hasn't propagated yet — wait a few more hours.</div>
+  </div>
+  <div class="file-card">
+    <div class="filename">Domain not working (partnershiparchitect.uk gives an error)</div>
+    <div class="desc">DNS changes can take up to 48 hours to fully propagate worldwide. The quiz still works at partnership-quiz.vercel.app in the meantime. Check Vercel → Domains — does it show a green tick next to partnershiparchitect.uk?</div>
+  </div>
+  <div class="file-card">
+    <div class="filename">You want to change something but don't know how</div>
+    <div class="desc">Open Cursor → press Ctrl+L → describe what you want in plain English. For example: "I want to change the welcome headline to say X" or "Add a new question to dimension 2". The AI will make the change for you.</div>
+  </div>
+
+</main>
+
+<footer>
+  Partnership Health Assessment · partnershiparchitect.uk · Built April 2026
+</footer>
+
+</body>
+</html>
