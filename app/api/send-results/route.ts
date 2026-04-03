@@ -22,8 +22,12 @@ export async function POST(req: NextRequest) {
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
   const YOUR_EMAIL = process.env.YOUR_EMAIL ?? "tatyana@example.com";
 
+  console.log("API key present:", !!RESEND_API_KEY);
+  console.log("Sending to:", YOUR_EMAIL);
+
   if (!RESEND_API_KEY) {
-    return NextResponse.json({ ok: true, note: "No RESEND_API_KEY set" });
+    console.error("RESEND_API_KEY is missing!");
+    return NextResponse.json({ ok: false, error: "No RESEND_API_KEY set" }, { status: 500 });
   }
 
   const bandLabel = getScoreBandLabel(totalScore);
@@ -137,6 +141,8 @@ export async function POST(req: NextRequest) {
       }),
     });
     const data = await res.json();
+    console.log("Resend response status:", res.status);
+    console.log("Resend response:", JSON.stringify(data));
     if (!res.ok) {
       console.error("Resend error:", data);
       return NextResponse.json({ ok: false, error: data }, { status: 500 });
