@@ -231,6 +231,7 @@ export default function PartnershipQuiz() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          type: "results",
           firstName,
           email,
           totalScore,
@@ -254,6 +255,7 @@ export default function PartnershipQuiz() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          type: "contact",
           firstName,
           email,
           totalScore,
