@@ -129,7 +129,22 @@ export async function POST(req: NextRequest) {
   `;
 
   try {
-    const res = await fetch("https://api.resend.com/emails", {
+    // Email 1: results to the quiz taker
+    const res1 = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${RESEND_API_KEY}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        from: "Partnership Health <hello@partnershiparchitect.uk>",
+        to: [email],
+        subject: `Your Partnership Health Results, ${firstName}`,
+        html: leadHtml,
+      }),
+    });
+    const data1 = await res1.json();
+    console.log("Lead email status:", res1.status, JSON.stringify(data1));
+
+    // Email 2: notification to owner
+    const res2 = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { Authorization: `Bearer ${RESEND_API_KEY}`, "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -140,12 +155,11 @@ export async function POST(req: NextRequest) {
         html: combinedHtml,
       }),
     });
-    const data = await res.json();
-    console.log("Resend response status:", res.status);
-    console.log("Resend response:", JSON.stringify(data));
-    if (!res.ok) {
-      console.error("Resend error:", data);
-      return NextResponse.json({ ok: false, error: data }, { status: 500 });
+    const data2 = await res2.json();
+    console.log("Owner email status:", res2.status, JSON.stringify(data2));
+
+    if (!res1.ok || !res2.ok) {
+      return NextResponse.json({ ok: false, error: { lead: data1, owner: data2 } }, { status: 500 });
     }
     return NextResponse.json({ ok: true });
   } catch (err) {
