@@ -1,0 +1,213 @@
+<title>Founder Team Questionnaire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: one centred column, one question per screen, same system as "Do I Need a Co-founder?" */
+:root{
+  --bg:#F2F7FC; --surface:#FFFFFF; --ink:#1B2E4F; --muted:#5A6D87; --line:#D5E2EF;
+  --red:#D96B55; --gold:#3E6FA8; --gold-soft:#E4EEF8;
+  --display:"Sora","Segoe UI","Helvetica Neue",Arial,sans-serif;
+  --body:"IBM Plex Sans","Segoe UI","Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;padding-inline:16px;padding-block:28px 56px}
+.wrap{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.brand .dot{width:8px;height:8px;border-radius:50%;background:var(--red)}
+h1{font-family:var(--display);font-weight:600;letter-spacing:-.02em;font-size:clamp(30px,6vw,40px);line-height:1.15;margin:0;text-wrap:balance}
+p{margin:0}
+.lead{font-size:18px;color:var(--muted)}
+.foot{font-size:12px;color:var(--muted)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn{font:inherit;font-weight:600;border-radius:8px;padding:12px 22px;cursor:pointer;border:1px solid var(--ink);background:var(--ink);color:var(--bg)}
+.btn:disabled{opacity:.35;cursor:default}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.small{padding:8px 14px;font-size:14px}
+.btn:focus-visible,.opt:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.qtop{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.count{font-family:var(--mono);font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.track{height:4px;border-radius:2px;background:var(--line);overflow:hidden}
+.fill{height:100%;background:var(--red);width:0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:28px 24px;display:flex;flex-direction:column;gap:20px}
+.qtext{font-family:var(--display);font-size:clamp(21px,3.8vw,26px);font-weight:500;letter-spacing:-.01em;line-height:1.3;text-wrap:balance}
+.hint{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--red);margin-top:-10px}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{font:inherit;font-weight:500;text-align:left;display:flex;align-items:center;gap:12px;padding:14px 16px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);cursor:pointer}
+.opt:hover{border-color:var(--gold);background:var(--gold-soft)}
+.opt .box{width:18px;height:18px;flex:none;border:1.5px solid var(--gold);border-radius:4px;display:grid;place-items:center;font-size:12px}
+.opt.single .box{border-radius:50%}
+.opt[aria-pressed="true"]{background:var(--gold-soft);color:var(--ink);border-color:var(--red)}
+.opt[aria-pressed="true"] .box{border-color:var(--red);background:var(--red);color:#FFFFFF}
+textarea{width:100%;font:inherit;min-height:120px;border:1px solid var(--line);border-radius:8px;padding:12px;background:var(--surface);color:var(--ink);resize:vertical}
+.note{font-size:14px;color:var(--muted)}
+.notice{font-size:13px;color:var(--muted);border-left:3px solid var(--gold);padding-left:10px}
+.done h2{font-family:var(--display);font-weight:600;font-size:28px;margin:0;letter-spacing:-.02em}
+@media (prefers-reduced-motion:no-preference){.fill{transition:width .3s ease}.card{animation:in .25s ease}}
+@keyframes in{from{opacity:.4;transform:translateY(6px)}to{opacity:1;transform:none}}
+</style>
+
+<div class="wrap">
+  <div class="brand"><span class="dot"></span>The Partnership Architect</div>
+
+  <section id="intro" class="wrap" style="gap:18px">
+    <h1>Before we meet</h1>
+    <p class="lead">A few quick questions about you and your team, so the session fits what you need. About 2 minutes.</p>
+    <div class="row"><button class="btn" id="start" type="button">Start</button></div>
+    <p class="foot">Your answers are only used to prepare the session.</p>
+  </section>
+
+  <section id="quiz" class="wrap" style="gap:16px" hidden>
+    <div class="qtop"><span class="count" id="count"></span></div>
+    <div class="track"><div class="fill" id="fill"></div></div>
+    <div class="card" id="card">
+      <p class="qtext" id="qtext"></p>
+      <p class="hint" id="hint" hidden></p>
+      <div id="body"></div>
+      <div class="row" id="nextRow" hidden><button class="btn" id="next" type="button">Next</button></div>
+    </div>
+    <div class="row"><button class="btn ghost small" id="back" type="button">← Back</button></div>
+  </section>
+
+  <section id="done" class="wrap done" hidden>
+    <h2>Thank you</h2>
+    <p class="lead">Your answers will help shape the session. See you there.</p>
+    <p class="notice" id="status" hidden></p>
+  </section>
+</div>
+
+<script>
+/* WHERE ANSWERS ARE SENT. Paste the Google Apps Script web app URL
+   (https://script.google.com/macros/s/.../exec) between the quotes.
+   Left empty, the page runs as a preview and saves nothing. */
+const FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbxGcP1AUK5k628NSsjkYjvKvWPd7Wc-LC-2v-kWudSY90MlfbDrabN6x6LgtL_dOqns/exec";
+const ERR = 'Your answers could not be sent. Please try again later.';
+
+// Answers are stored as the option text, so lists that change with earlier answers stay consistent.
+const SOLO='Yes, I\'m a solo founder (with or without hired people)', TEAM='No, I have one or more co-founders',
+      LOOK='I\'m looking for a co-founder', NOTYET='I haven\'t started yet', ME='Just me', NOTHING='Nothing yet';
+const Q = [
+ {id:'solo', type:'single', text:'Are you founding your business solo?', opts:[SOLO,TEAM,LOOK,NOTYET]},
+ {id:'first', type:'single',
+  text:a=>a.solo===NOTYET?'Would this be your first business?':'Is this your first business?',
+  opts:a=>a.solo===NOTYET?['Yes, it would be my first','No, I\'ve started a business before']:['Yes, it\'s my first','No, I\'ve started a business before']},
+ {id:'size', type:'single', text:'How many people are in your team, including you?',
+  opts:a=>a.solo===TEAM?['2–3','4–5','6 or more']:[ME,'2–3','4–5','6 or more'],
+  show:a=>a.solo!==NOTYET},
+ {id:'agreed', type:'multi', text:'What have you already agreed with your co-founders?',
+  opts:['Who does what','How we make decisions','How we split the shares','How we invest in the business and take money out','How we resolve conflicts',NOTHING], exclusive:NOTHING,
+  show:a=>a.solo===TEAM},
+ {id:'recorded', type:'single', text:'How have you recorded what you agreed?',
+  opts:['In a formal written agreement','In writing, but not a formal agreement (notes, emails, messages)','It\'s not written down in one document'],
+  show:a=>a.solo===TEAM && (a.agreed||[]).length>0 && !(a.agreed||[]).includes(NOTHING)},
+ {id:'cofounders', type:'multi', text:'Who are your co-founders?',
+  opts:['Family member, spouse or partner','Friend','Former colleague','Former classmate','Someone introduced or found for their skills and experience'],
+  show:a=>a.solo===TEAM},
+ {id:'topics', type:'multi', max:2, text:'What is most challenging for you right now, at this stage?',
+  opts:a=>{
+    const hasTeam = a.size && a.size!==ME;
+    if(a.solo===TEAM) return ['Working well with my co-founders','Agreeing roles, contribution and shares','Building or completing my team','Keeping my team motivated'];
+    if(a.solo===LOOK) return ['Finding the right co-founder','Agreeing roles, contribution and shares with a future co-founder', ...(hasTeam?['Building or completing my team','Keeping my team motivated']:['Building my first team'])];
+    if(a.solo===SOLO) return ['Deciding whether I need a co-founder', ...(hasTeam?['Building or completing my team','Agreeing roles and responsibilities in my team','Keeping my team motivated']:['Building my first team','Finding the right people to work with'])];
+    return ['Deciding whether I need a co-founder','Finding the right co-founder','Agreeing roles, contribution and shares from the start','Building my first team'];
+  }},
+ {id:'challenge', type:'text', optional:true,
+  text:a=>{
+    if(a.solo===NOTYET) return 'What would you most like to get right when you start working with others?';
+    if(a.size===ME) return 'What would you like to improve in how you work with others (freelancers, advisers, partners)?';
+    return 'What would you like to improve in how your team works?';
+  }}
+];
+
+const A = {}; let i=0;
+const $ = id => document.getElementById(id);
+const val = (x)=> typeof x==='function' ? x(A) : x;
+const visible = () => Q.filter(q => !q.show || q.show(A));
+
+// When an earlier answer changes, drop later answers that no longer fit.
+function tidy(){
+  Q.forEach(q=>{
+    if(q.show && !q.show(A)){ delete A[q.id]; return; }
+    if(q.type==='text'||A[q.id]===undefined) return;
+    const o=val(q.opts);
+    if(q.type==='single'){ if(!o.includes(A[q.id])) delete A[q.id]; }
+    else A[q.id]=A[q.id].filter(x=>o.includes(x));
+  });
+}
+
+function render(){
+  tidy();
+  const vis = visible(); if(i>vis.length-1) i=vis.length-1; const q = vis[i];
+  $('count').textContent = `${i+1} / ${vis.length}`;
+  $('fill').style.width = `${Math.round(i/vis.length*100)}%`;
+  $('qtext').textContent = val(q.text);
+  const hint = q.type==='multi' ? (q.max ? `Choose up to ${q.max}` : 'Choose all that apply') : (q.optional ? 'Optional' : '');
+  $('hint').textContent = hint; $('hint').hidden = !hint;
+  $('back').hidden = i===0;
+  const body = $('body'); body.innerHTML='';
+  if(q.type==='text'){
+    const t=document.createElement('textarea'); t.id='ta'; t.setAttribute('aria-label',val(q.text)); t.value=A[q.id]||'';
+    t.addEventListener('input',()=>{A[q.id]=t.value});
+    body.appendChild(t);
+    $('next').textContent='Send'; $('next').disabled=false; $('nextRow').hidden=false;
+  } else {
+    const wrap=document.createElement('div'); wrap.className='opts';
+    const sel = q.type==='multi' ? (A[q.id]||[]) : A[q.id];
+    val(q.opts).forEach(o=>{
+      const b=document.createElement('button'); b.type='button'; b.className='opt'+(q.type==='single'?' single':'');
+      const on = q.type==='multi' ? sel.includes(o) : sel===o;
+      b.setAttribute('aria-pressed',on);
+      b.innerHTML=`<span class="box">${on&&q.type==='multi'?'✓':''}</span><span></span>`;
+      b.lastChild.textContent=o;
+      b.onclick=()=>choose(q,o);
+      wrap.appendChild(b);
+    });
+    body.appendChild(wrap);
+    if(q.type==='multi'){ $('next').textContent='Next'; $('next').disabled=!(A[q.id]||[]).length; $('nextRow').hidden=false; }
+    else $('nextRow').hidden=true;
+  }
+  const c=$('card'); c.style.animation='none'; void c.offsetWidth; c.style.animation='';
+}
+let busy=false;
+function choose(q,o){
+  if(q.type==='single'){ if(busy) return; busy=true; A[q.id]=o; render(); setTimeout(()=>{busy=false;advance()},220); return; }
+  let s=[...(A[q.id]||[])];
+  if(s.includes(o)) s=s.filter(x=>x!==o);
+  else{
+    if(q.exclusive!==undefined){ s = o===q.exclusive ? [o] : s.filter(x=>x!==q.exclusive).concat(o); }
+    else if(q.max && s.length>=q.max){ s.shift(); s.push(o); }
+    else s.push(o);
+  }
+  A[q.id]=s; render();
+}
+function advance(){
+  tidy(); const vis=visible();
+  if(i<vis.length-1){ i++; render(); window.scrollTo(0,0); } else submit();
+}
+$('next').onclick=advance;
+$('back').onclick=()=>{ if(i>0){ i--; render(); } };
+$('start').onclick=()=>{ $('intro').hidden=true; $('quiz').hidden=false; i=0; render(); };
+
+function readable(){
+  const out={lang:'en', solo:'', first:'', size:'', agreed:'', recorded:'', cofounders:'', topics:'', challenge:''};
+  visible().forEach(q=>{ const v=A[q.id]; out[q.id]=Array.isArray(v)?v.join('; '):(v||''); });
+  return out;
+}
+async function submit(){
+  $('quiz').hidden=true; $('done').hidden=false; window.scrollTo(0,0);
+  const data=readable();
+  if(!FORM_ENDPOINT){ $('status').textContent='Preview: answers are not saved on this version of the page.'; $('status').hidden=false; return; }
+  try{
+    if(FORM_ENDPOINT.includes('script.google.com')){
+      // Google Apps Script: send as plain text; the browser cannot read the reply, so success is assumed.
+      await fetch(FORM_ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)});
+    } else {
+      const r=await fetch(FORM_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)});
+      if(!r.ok) throw new Error();
+    }
+  }catch(e){ $('status').textContent=ERR; $('status').hidden=false; }
+}
+</script>
