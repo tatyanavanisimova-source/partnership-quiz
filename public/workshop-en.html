@@ -97,6 +97,9 @@ const Q = [
  {id:'size', type:'single', text:'How many people are in your team, including you?',
   opts:a=>a.solo===TEAM?['2–3','4–5','6 or more']:[ME,'2–3','4–5','6 or more'],
   show:a=>a.solo!==NOTYET},
+ {id:'funding', type:'multi', exclusive:a=>a.solo===NOTYET?'Not decided yet':'No funding yet',
+  text:a=>a.solo===NOTYET?'How do you plan to fund your business at the start?':'How is your business funded at this stage?',
+  opts:a=>['By the founder(s)','A bank loan or a grant','An investor who is not a founder', a.solo===NOTYET?'Not decided yet':'No funding yet']},
  {id:'agreed', type:'multi', text:'What have you already agreed with your co-founders?',
   opts:['Who does what','How we make decisions','How we split the shares','How we invest in the business and take money out','How we resolve conflicts',NOTHING], exclusive:NOTHING,
   show:a=>a.solo===TEAM},
@@ -177,7 +180,8 @@ function choose(q,o){
   let s=[...(A[q.id]||[])];
   if(s.includes(o)) s=s.filter(x=>x!==o);
   else{
-    if(q.exclusive!==undefined){ s = o===q.exclusive ? [o] : s.filter(x=>x!==q.exclusive).concat(o); }
+    const ex=val(q.exclusive);
+    if(ex!==undefined){ s = o===ex ? [o] : s.filter(x=>x!==ex).concat(o); }
     else if(q.max && s.length>=q.max){ s.shift(); s.push(o); }
     else s.push(o);
   }
@@ -192,7 +196,7 @@ $('back').onclick=()=>{ if(i>0){ i--; render(); } };
 $('start').onclick=()=>{ $('intro').hidden=true; $('quiz').hidden=false; i=0; render(); };
 
 function readable(){
-  const out={lang:'en', solo:'', first:'', size:'', agreed:'', recorded:'', cofounders:'', topics:'', challenge:''};
+  const out={funding:'', lang:'en', solo:'', first:'', size:'', agreed:'', recorded:'', cofounders:'', topics:'', challenge:''};
   visible().forEach(q=>{ const v=A[q.id]; out[q.id]=Array.isArray(v)?v.join('; '):(v||''); });
   return out;
 }

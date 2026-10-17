@@ -97,6 +97,9 @@ const Q = [
  {id:'size', type:'single', text:'Скільки людей у вашій команді, включно з вами?',
   opts:a=>a.solo===TEAM?['2–3','4–5','6 і більше']:[ME,'2–3','4–5','6 і більше'],
   show:a=>a.solo!==NOTYET},
+ {id:'funding', type:'multi', exclusive:a=>a.solo===NOTYET?'Ще не вирішили':'Поки без фінансування',
+  text:a=>a.solo===NOTYET?'Як ви плануєте фінансувати бізнес на старті?':'Як фінансується ваш бізнес на цьому етапі?',
+  opts:a=>['Коштом засновника (засновників)','Банківський кредит або грант','Інвестор, який не є засновником', a.solo===NOTYET?'Ще не вирішили':'Поки без фінансування']},
  {id:'agreed', type:'multi', text:'Про що ви вже домовилися зі співзасновниками?',
   opts:['Хто що робить','Як ми ухвалюємо рішення','Як ми розподіляємо частки','Як ми інвестуємо в бізнес і виводимо з нього гроші','Як ми вирішуємо конфлікти',NOTHING], exclusive:NOTHING,
   show:a=>a.solo===TEAM},
@@ -177,7 +180,8 @@ function choose(q,o){
   let s=[...(A[q.id]||[])];
   if(s.includes(o)) s=s.filter(x=>x!==o);
   else{
-    if(q.exclusive!==undefined){ s = o===q.exclusive ? [o] : s.filter(x=>x!==q.exclusive).concat(o); }
+    const ex=val(q.exclusive);
+    if(ex!==undefined){ s = o===ex ? [o] : s.filter(x=>x!==ex).concat(o); }
     else if(q.max && s.length>=q.max){ s.shift(); s.push(o); }
     else s.push(o);
   }
@@ -192,7 +196,7 @@ $('back').onclick=()=>{ if(i>0){ i--; render(); } };
 $('start').onclick=()=>{ $('intro').hidden=true; $('quiz').hidden=false; i=0; render(); };
 
 function readable(){
-  const out={lang:'uk', solo:'', first:'', size:'', agreed:'', recorded:'', cofounders:'', topics:'', challenge:''};
+  const out={funding:'', lang:'uk', solo:'', first:'', size:'', agreed:'', recorded:'', cofounders:'', topics:'', challenge:''};
   visible().forEach(q=>{ const v=A[q.id]; out[q.id]=Array.isArray(v)?v.join('; '):(v||''); });
   return out;
 }
